@@ -4,7 +4,7 @@ import polars as pl
 from timer import timer
 from data_gen import generate_parquets
 
-generate_parquets(100)
+generate_parquets(200)
 
 files = sorted(glob.glob("parquet_data/*.parquet"))
 
@@ -42,7 +42,7 @@ def merge_duckdb(files):
 polars_df = merge_polars(files)
 duckdb_df = merge_duckdb(files)
 
-# compare the two dataframes using datacompy
-import datacompy
-compare = datacompy.Compare(polars_df, duckdb_df, on_index=True)
-print(compare.report())
+# # compare the two dataframes using datacompy
+# import datacompy
+# compare = datacompy.Compare(polars_df, duckdb_df, on_index=True)
+# print(compare.report())

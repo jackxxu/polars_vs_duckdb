@@ -17,9 +17,7 @@ def generate_parquets(num_files: int):
     for i in range(num_files):
         df = pd.DataFrame({
             'id': np.arange(0, rows_per_file),
-            'key': np.random.randint(0, 100000, size=rows_per_file),
             'value': np.random.rand(rows_per_file),
-            'category': np.random.choice(['A', 'B', 'C'], size=rows_per_file)
         })
         df.to_parquet(
             f'parquet_data/data_{i}.parquet',

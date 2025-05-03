@@ -4,7 +4,7 @@ import polars as pl
 from timer import timer
 from data_gen import generate_parquets
 
-generate_parquets(200)
+generate_parquets(100)
 
 files = sorted(glob.glob("parquet_data/*.parquet"))
 

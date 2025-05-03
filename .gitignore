@@ -2,3 +2,4 @@ venv
 parquet_data
 .DS_Store
 *.pyc
+__pycache__/

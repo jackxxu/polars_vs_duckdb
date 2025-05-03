@@ -4,3 +4,4 @@ duckdb
 polars
 pyarrow
 pyarrow[parquet]
+datacompy

@@ -5,9 +5,6 @@ import pandas as pd
 from timer import timer
 from data_gen import generate_parquets
 
-generate_parquets(200)
-
-files = sorted(glob.glob("parquet_data/*.parquet"))
 
 @timer
 def merge_polars(files):
@@ -53,14 +50,16 @@ def merge_pandas(files):
 
     return df
 
-pandas_df = merge_pandas(files)
-polars_df = merge_polars(files)
-duckdb_df = merge_duckdb(files)
+if __name__ == "__main__":
 
-# compare the two dataframes using datacompy
-import datacompy
-compare = datacompy.Compare(polars_df, duckdb_df, on_index=True)
-assert compare.matches(), "DataFrames are not equal"
+    generate_parquets(200)
+    files = sorted(glob.glob("parquet_data/*.parquet"))
 
-compare = datacompy.Compare(polars_df, pandas_df, on_index=True)
-assert compare.matches(), "DataFrames are not equal"
+    # Run the functions to see the time taken
+    polars_df = merge_polars(files)
+    duckdb_df = merge_duckdb(files)
+    pandas_df = merge_pandas(files)
+
+    # Check if the dataframes are equal
+    assert polars_df.equals(duckdb_df), "DataFrames are not equal"
+    assert polars_df.equals(pandas_df), "DataFrames are not equal"

@@ -5,7 +5,7 @@ import pandas as pd
 from timer import timer
 from data_gen import generate_parquets
 
-generate_parquets(100)
+generate_parquets(200)
 
 files = sorted(glob.glob("parquet_data/*.parquet"))
 

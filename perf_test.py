@@ -1,3 +1,4 @@
+import os
 import glob
 import duckdb
 import polars as pl
@@ -50,6 +51,24 @@ def merge_pandas(files):
 
     return df
 
+@timer
+def stack_pandas():
+    parquet_files = glob.glob(os.path.join('parquet_data', '*.parquet'))
+    # Read and stack them into a single DataFrame
+    return pd.concat([pd.read_parquet(f) for f in parquet_files], ignore_index=True)
+
+
+@timer
+def stack_duckdb():
+    return duckdb.query("SELECT * FROM 'parquet_data/*.parquet'").to_df()
+
+
+@timer
+def stack_polars():
+    files = glob.glob("parquet_data/*.parquet")
+    return pl.read_parquet(files)
+
+
 if __name__ == "__main__":
 
     generate_parquets(200)
@@ -59,6 +78,10 @@ if __name__ == "__main__":
     polars_df = merge_polars(files)
     duckdb_df = merge_duckdb(files)
     pandas_df = merge_pandas(files)
+
+    stack_polars()
+    stack_pandas()
+    stack_duckdb()
 
     # Check if the dataframes are equal
     assert polars_df.equals(duckdb_df), "DataFrames are not equal"
